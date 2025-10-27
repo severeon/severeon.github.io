@@ -1,3 +1,74 @@
-remote_theme: pages-themes/modernist@v0.2.0
+# GitHub Pages Configuration for Redeemer Wasteland Website
+title: "Redeemer - Wasteland Code Redemption Assistant"
+description: "Navigate the digital wasteland and recover lost promotional codes across all gaming platforms. Your trusted companion for code redemption."
+author: "Redeemer Team"
+
+# GitHub Pages settings
+remote_theme: null
 plugins:
-  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-redirect-from
+
+# SEO and social media
+twitter:
+  username: "redeemer_app"
+  card: "summary_large_image"
+open_graph:
+  type: "website"
+  title: "Redeemer - Wasteland Code Redemption Assistant"
+  description: "Navigate the digital wasteland and recover lost promotional codes across all gaming platforms"
+  image: "/images/og-image.png"
+
+# Navigation
+navigation:
+  - title: "Home"
+    url: "/"
+  - title: "About"
+    url: "/#about"
+  - title: "Features"
+    url: "/#features"
+  - title: "Screenshots"
+    url: "/#screenshots"
+  - title: "Download"
+    url: "/#download"
+  - title: "Contact"
+    url: "/#contact"
+
+# Exclude from processing
+exclude:
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - .gitignore
+  - .DS_Store
+
+# Markdown processing
+markdown: kramdown
+highlighter: rouge
+
+# Collections
+collections:
+  docs:
+    output: true
+    permalink: /docs/:slug/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "default"
+
+# Build settings
+safe: false
+incremental: false
+
+# Wasteland theme settings
+wasteland:
+  primary_color: "#FF6B35"
+  secondary_color: "#B7410E"
+  accent_color: "#F7931E"
+  background: "#2C2C2C"
+  text_primary: "#D4A574"
