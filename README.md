@@ -1,202 +1,83 @@
-# Redeemer Wasteland Website
+# NeuroScript: Neural Networks as Composable Pipelines
 
-A post-apocalyptic themed website for the Redeemer code redemption application, built for GitHub Pages.
+**Why do I need to become an expert in mathematics and learn one of the least accessible Python libraries I've ever encountered just to experiment with transformers?**
 
-## 🌵 Theme: Wasteland
+I tried drawing a PlantUML flowchart to understand how state changes ripple through the system. Eight boxes in, it clicked: **it's just a pipeline with middleware**.
 
-This website features a comprehensive wasteland/post-apocalyptic theme that reflects the digital wastelands of lost gaming codes. The design includes:
+But saying "10,000 disorganized notebooks and git repos totaling 200GB+ is blocking progress" feels inadequate. Magic is cool for a while, but programmers don't like black boxes. At least this one doesn't.
 
-- **Color Palette**: Sandy browns, rust oranges, and charcoal grays
-- **Typography**: Futuristic fonts (Orbitron, Exo 2) for that post-apocalyptic feel
-- **Visual Effects**: Particle backgrounds, glowing elements, and hover animations
-- **Interactive Elements**: Smooth scrolling, mobile-responsive navigation, and special effects
+## The Core Idea
 
-## 📁 File Structure
+**Neurons** are a powerful abstraction because they reduce granularity from *lines of PyTorch and math* to Lego-brick sized AI concepts. Everything is a neuron, neurons are made of neurons, and we're running middleware on a pipeline moving arrays of floats through a computational landscape.
 
+**Middleware** takes input, applies a transformation, and passes the result to the next stage:
 ```
-website/
-├── index.html          # Main website page
-├── css/
-│   └── style.css       # Wasteland-themed stylesheet
-├── js/
-│   └── main.js         # Interactive JavaScript features
-├── _config.yml         # GitHub Pages configuration
-├── README.md           # This file
-└── images/             # Image assets (ready for screenshots)
+input -> [middleware, ...] -> output
 ```
 
-## 🚀 Features
+Simple, right?
 
-### Visual Design
-- **Responsive Design**: Works perfectly on all devices
-- **Particle Background**: Animated wasteland-themed particle system
-- **Smooth Animations**: Fade-in effects, hover states, and scroll animations
-- **Mobile Menu**: Collapsible navigation for mobile devices
-
-### Interactive Elements
-- **Smooth Scrolling**: Navigation links smoothly scroll to sections
-- **Counter Animations**: Statistics count up on page load
-- **Form Handling**: Contact form with wasteland-themed messages
-- **Typing Effects**: Animated text reveal for hero titles
-- **Glitch Effects**: Special hover effects on key elements
-- **Easter Egg**: Konami code activation for wasteland mode
-
-### Sections
-1. **Hero Section**: Eye-catching introduction with app mockup
-2. **About Section**: Company/app description with wasteland map
-3. **Features Section**: Grid of app features with detailed lists
-4. **Screenshots Section**: Gallery placeholder for app screenshots
-5. **Download Section**: Multiple download options for different platforms
-6. **Contact Section**: Contact form and social links
-7. **Footer**: Links, badges, and technology stack
-
-## 🛠️ Technical Stack
-
-- **HTML5**: Semantic markup with accessibility features
-- **CSS3**: Modern CSS with custom properties and Grid/Flexbox
-- **JavaScript**: Vanilla JS with modern ES6+ features
-- **External Libraries**:
-  - Particles.js for background effects
-  - Google Fonts (Orbitron, Exo 2) for typography
-
-## 🎨 Color Scheme
-
-```css
-/* Primary Colors */
---wasteland-orange: #FF6B35;  /* Main accent */
---wasteland-rust: #B7410E;     /* Secondary accent */
---wasteland-sunset: #F7931E;   /* Highlight */
---wasteland-sand: #D4A574;     /* Light text */
---wasteland-charcoal: #2C2C2C; /* Dark background */
+**What if neural networks were actually *this* simple?**
+```
+in -> embedding -> FFN -> out
 ```
 
-## 📱 Responsive Breakpoints
+## Enter NeuroScript
 
-- **Desktop**: 1200px and above
-- **Tablet**: 768px - 1199px
-- **Mobile**: Below 768px
+NeuroScript is a DSL that compiles to PyTorch. It treats neurons as first-class compositional primitives with explicit dataflow. Here's GPT-2:
+```neuroscript
+use core,nn/*
 
-## 🚀 Deployment to GitHub Pages
+# Complete GPT-style language model
+neuron GPT(vocab_size, d_model, num_layers, num_heads, d_ff, max_seq_len):
+    in: [batch, seq]  # Token IDs
+    out: [batch, seq, vocab_size]  # Logits
+    let:
+      layers = Sequential(num_layers, TransformerBlock)
+    graph:
+        in ->
+            Embedding(vocab_size, d_model)
+            embedded
 
-### Method 1: Using GitHub Pages (Recommended)
+        embedded ->
+            PositionalEncoding(d_model, max_len=max_seq_len)
+            positioned
 
-1. **Push to GitHub**: Ensure your project is on GitHub
-2. **Enable GitHub Pages**:
-   - Go to repository Settings
-   - Scroll to "Pages" section
-   - Select "Deploy from a branch"
-   - Choose "main" branch and "/ (root)" folder
-3. **Access**: Your site will be available at `https://username.github.io/redeemer/`
+        positioned ->
+            layers(d_model, num_heads, d_ff)
+            features
 
-### Method 2: Using GitHub Actions (For Advanced Setup)
+        features ->
+            LayerNorm(d_model)
+            normalized
 
-Create `.github/workflows/deploy.yml`:
+        normalized ->
+            Linear(d_model, vocab_size)
+            out
 
-```yaml
-name: Deploy to GitHub Pages
+# Smaller test model for quick experiments
+neuron TinyGPT(vocab_size):
+    in: [batch, seq]
+    out: [batch, seq, vocab_size]
+    graph:
+        in -> GPT(vocab_size, 256, 4, 4, 1024, 512) -> out
 
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+# GPT-2 Small configuration
+neuron GPT2Small(vocab_size):
+    in: [batch, seq]
+    out: [batch, seq, vocab_size]
+    graph:
+        in -> GPT(vocab_size, 768, 12, 12, 3072, 1024) -> out
 ```
 
-## 🔧 Local Development
+That's it. Compare this to [any PyTorch GPT-2 implementation](https://github.com/karpathy/nanoGPT/blob/master/model.py).
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/tquick/redeemer.git
-   cd redeemer/website
-   ```
+## What's Next
 
-2. **Open in browser**:
-   ```bash
-   # Simple HTTP server
-   python -m http.server 8000
-   # Or
-   npx serve .
-   ```
+I'm building this to make architecture exploration feel like playing with Legos instead of reading textbooks. Still figuring out details around recursive architectures and shape inference.
 
-3. **Access**: Open `http://localhost:8000` in your browser
-
-## 📸 Adding Screenshots
-
-Replace the placeholder screenshots in the HTML with actual app screenshots:
-
-1. Add your screenshots to the `images/` folder
-2. Update the `src` attributes in the screenshots section
-3. Recommended sizes:
-   - Mobile screenshots: 375x667px (iPhone SE size)
-   - Desktop screenshots: 1200x675px
-
-## 🎯 Customization
-
-### Changing Colors
-Edit the CSS custom properties in `css/style.css`:
-
-```css
-:root {
-  --primary-color: #YOUR_COLOR;
-  --secondary-color: #YOUR_COLOR;
-  /* ... */
-}
-```
-
-### Updating Content
-- Edit text content directly in `index.html`
-- Modify feature lists in the features section
-- Update download links in the download section
-
-### Adding New Sections
-1. Add HTML structure in `index.html`
-2. Add corresponding CSS styles in `css/style.css`
-3. Update navigation in the header
-
-## 🌟 Performance
-
-- **Optimized Images**: Use WebP format for better compression
-- **Minimal Dependencies**: Only Particles.js external library
-- **Efficient CSS**: Uses CSS Grid and Flexbox for layouts
-- **Debounced Scroll**: Optimized scroll event handling
-
-## 🔒 Security
-
-- **No External Forms**: Contact form is for display purposes
-- **Safe External Links**: All external links use `rel="noopener"`
-- **No Sensitive Data**: No hardcoded credentials or API keys
-
-## 📝 License
-
-This website is part of the Redeemer project and follows the same MIT license.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test on multiple devices
-5. Submit a pull request
-
-## 📞 Support
-
-For questions about the website:
-- Email: support@redeemer.app
-- GitHub Issues: Create an issue in this repository
-- Discord: Join our wasteland community
+Like what you see? Maybe you see obvious problems I'm missing... I genuinely want to know!
 
 ---
 
-*"In the wasteland of codes, hope never dies."*
-
-🛡️ **Stay safe out there in the digital wasteland, survivor.** 🛡️
+*NeuroScript is a research project in active development. Implementation details are evolving.*
