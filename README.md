@@ -30,44 +30,44 @@ use core,nn/*
 
 # Complete GPT-style language model
 neuron GPT(vocab_size, d_model, num_layers, num_heads, d_ff, max_seq_len):
-    in: [batch, seq]  # Token IDs
-    out: [batch, seq, vocab_size]  # Logits
-    let:
-      layers = Sequential(num_layers, TransformerBlock)
-    graph:
-        in ->
-            Embedding(vocab_size, d_model)
-            embedded
+  in: [batch, seq]  # Token IDs
+  out: [batch, seq, vocab_size]  # Logits
+  let:
+    layers = Sequential(num_layers, TransformerBlock)
+  graph:
+    in ->
+      Embedding(vocab_size, d_model)
+      embedded
 
-        embedded ->
-            PositionalEncoding(d_model, max_len=max_seq_len)
-            positioned
+    embedded ->
+      PositionalEncoding(d_model, max_len=max_seq_len)
+      positioned
 
-        positioned ->
-            layers(d_model, num_heads, d_ff)
-            features
+    positioned ->
+      layers(d_model, num_heads, d_ff)
+      features
 
-        features ->
-            LayerNorm(d_model)
-            normalized
+    features ->
+      LayerNorm(d_model)
+      normalized
 
-        normalized ->
-            Linear(d_model, vocab_size)
-            out
+    normalized ->
+      Linear(d_model, vocab_size)
+      out
 
 # Smaller test model for quick experiments
 neuron TinyGPT(vocab_size):
-    in: [batch, seq]
-    out: [batch, seq, vocab_size]
-    graph:
-        in -> GPT(vocab_size, 256, 4, 4, 1024, 512) -> out
+  in: [batch, seq]
+  out: [batch, seq, vocab_size]
+  graph:
+    in -> GPT(vocab_size, 256, 4, 4, 1024, 512) -> out
 
 # GPT-2 Small configuration
 neuron GPT2Small(vocab_size):
-    in: [batch, seq]
-    out: [batch, seq, vocab_size]
-    graph:
-        in -> GPT(vocab_size, 768, 12, 12, 3072, 1024) -> out
+  in: [batch, seq]
+  out: [batch, seq, vocab_size]
+  graph:
+    in -> GPT(vocab_size, 768, 12, 12, 3072, 1024) -> out
 ```
 
 That's it. Compare this to [any PyTorch GPT-2 implementation](https://github.com/karpathy/nanoGPT/blob/master/model.py).
