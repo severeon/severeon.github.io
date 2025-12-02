@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-bvzihdzo> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="NeuroScript Blog" href="https://severeon.github.io/rss.xml"><meta name="generator" content="Astro v5.16.3"><!-- Font preloads --><link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin><!-- Canonical URL --><link rel="canonical" href="https://severeon.github.io/blog/training-made-simple/"><!-- Primary Meta Tags --><title>Convention Over Configuration</title><meta name="title" content="Convention Over Configuration"><meta name="description" content="How NeuroScript simplifies training loops."><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://severeon.github.io/blog/training-made-simple/"><meta property="og:title" content="Convention Over Configuration"><meta property="og:description" content="How NeuroScript simplifies training loops."><meta property="og:image" content="https://severeon.github.io/_astro/blog-placeholder-1.Bx0Zcyzv.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://severeon.github.io/blog/training-made-simple/"><meta property="twitter:title" content="Convention Over Configuration"><meta property="twitter:description" content="How NeuroScript simplifies training loops."><meta property="twitter:image" content="https://severeon.github.io/_astro/blog-placeholder-1.Bx0Zcyzv.jpg"><style>:root{--accent: #2337ff;--accent-dark: #000d8a;--black: 15, 18, 25;--gray: 96, 115, 159;--gray-light: 229, 233, 240;--gray-dark: 34, 41, 57;--gray-gradient: rgba(var(--gray-light), 50%), #fff;--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%)}@font-face{font-family:Atkinson;src:url(/fonts/atkinson-regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:Atkinson;src:url(/fonts/atkinson-bold.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}body{font-family:Atkinson,sans-serif;margin:0;padding:0;text-align:left;background:linear-gradient(var(--gray-gradient)) no-repeat;background-size:100% 600px;word-wrap:break-word;overflow-wrap:break-word;color:rgb(var(--gray-dark));font-size:16px;line-height:1.6}main{width:720px;max-width:calc(100% - 2em);margin:auto;padding:3em 1em}h1,h2,h3,h4,h5,h6{margin:0 0 .5rem;color:rgb(var(--black));line-height:1.2}h1{font-size:3.052em}h2{font-size:2.441em}h3{font-size:1.953em}h4{font-size:1.563em}h5{font-size:1.25em}strong,b{font-weight:700}a,a:hover{color:var(--accent)}p{margin-bottom:1em}.prose p{margin-bottom:2em}textarea{width:100%;font-size:16px}input{font-size:16px}table{width:100%}img{max-width:100%;height:auto;border-radius:8px}code{padding:2px 5px;background-color:rgb(var(--gray-light));border-radius:2px;font-size:14px}pre{padding:1.5em;border-radius:8px}pre>code{all:unset}blockquote{border-left:4px solid var(--accent);padding:0 0 0 20px;margin:0;font-size:1.333em}hr{border:none;border-top:1px solid rgb(var(--gray-light))}@media(max-width:720px){body{font-size:18px}main{padding:1em}}.sr-only{border:0;padding:0;margin:0;position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);clip-path:inset(50%);white-space:nowrap}footer[data-astro-cid-sz7xmlte]{padding:2em 1em 6em;background:linear-gradient(var(--gray-gradient)) no-repeat;color:rgb(var(--gray));text-align:center}.social-links[data-astro-cid-sz7xmlte]{display:flex;justify-content:center;gap:1em;margin-top:1em}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]{text-decoration:none;color:rgb(var(--gray))}.social-links[data-astro-cid-sz7xmlte] a[data-astro-cid-sz7xmlte]:hover{color:rgb(var(--gray-dark))}a[data-astro-cid-eimmu3lg]{display:inline-block;text-decoration:none}a[data-astro-cid-eimmu3lg].active{font-weight:bolder;text-decoration:underline}header[data-astro-cid-3ef6ksr2]{margin:0;padding:0 1em;background:#fff;box-shadow:0 2px 8px rgba(var(--black),5%)}h2[data-astro-cid-3ef6ksr2]{margin:0;font-size:1em}h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2],h2[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none}nav[data-astro-cid-3ef6ksr2]{display:flex;align-items:center;justify-content:space-between}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{padding:1em .5em;color:var(--black);border-bottom:4px solid transparent;text-decoration:none}nav[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2].active{text-decoration:none;border-bottom-color:var(--accent)}.social-links[data-astro-cid-3ef6ksr2],.social-links[data-astro-cid-3ef6ksr2] a[data-astro-cid-3ef6ksr2]{display:flex}@media(max-width:720px){.social-links[data-astro-cid-3ef6ksr2]{display:none}}
+main[data-astro-cid-bvzihdzo]{width:calc(100% - 2em);max-width:100%;margin:0}.hero-image[data-astro-cid-bvzihdzo]{width:100%}.hero-image[data-astro-cid-bvzihdzo] img[data-astro-cid-bvzihdzo]{display:block;margin:0 auto;border-radius:12px;box-shadow:var(--box-shadow)}.prose[data-astro-cid-bvzihdzo]{width:720px;max-width:calc(100% - 2em);margin:auto;padding:1em;color:rgb(var(--gray-dark))}.title[data-astro-cid-bvzihdzo]{margin-bottom:1em;padding:1em 0;text-align:center;line-height:1}.title[data-astro-cid-bvzihdzo] h1[data-astro-cid-bvzihdzo]{margin:0 0 .5em}.date[data-astro-cid-bvzihdzo]{margin-bottom:.5em;color:rgb(var(--gray))}.last-updated-on[data-astro-cid-bvzihdzo]{font-style:italic}
+</style></head> <body data-astro-cid-bvzihdzo> <header data-astro-cid-3ef6ksr2> <nav data-astro-cid-3ef6ksr2> <h2 data-astro-cid-3ef6ksr2><a href="/" data-astro-cid-3ef6ksr2>NeuroScript Blog</a></h2> <div class="internal-links" data-astro-cid-3ef6ksr2> <a href="/" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/about" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> About </a>  </div> </nav> </header>  <main data-astro-cid-bvzihdzo> <article data-astro-cid-bvzihdzo> <div class="hero-image" data-astro-cid-bvzihdzo>  </div> <div class="prose" data-astro-cid-bvzihdzo> <div class="title" data-astro-cid-bvzihdzo> <div class="date" data-astro-cid-bvzihdzo> <time datetime="2024-12-01T06:00:00.000Z"> Dec 1, 2024 </time>  </div> <h1 data-astro-cid-bvzihdzo>Convention Over Configuration</h1> <hr data-astro-cid-bvzihdzo> </div>  <p><strong>Here’s what frustrated me about ML frameworks:</strong></p>
+<ul>
+<li>PyTorch: Too low-level, write your own training loops</li>
+<li>PyTorch Lightning: Better, but boilerplate-heavy</li>
+<li>Keras: Great API, but locked to TensorFlow (historically)</li>
+<li>Hugging Face: Amazing for transformers, but domain-specific</li>
+</ul>
+<p><strong>I wanted:</strong> Write the architecture, point to data, get training. No boilerplate.</p>
+<p><strong>NeuroScript now has this.</strong> Here’s training XOR:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. Write the architecture (01-xor.ns)</span></span>
+<span class="line"><span style="color:#B392F0">neuron</span><span style="color:#9ECBFF"> XOR</span><span style="color:#E1E4E8">()</span><span style="color:#9ECBFF">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  in: [batch, 2]</span></span>
+<span class="line"><span style="color:#B392F0">  out:</span><span style="color:#E1E4E8"> [batch, </span><span style="color:#9ECBFF">1]</span></span>
+<span class="line"><span style="color:#B392F0">  graph:</span></span>
+<span class="line"><span style="color:#E1E4E8">    in -</span><span style="color:#F97583">></span></span>
+<span class="line"><span style="color:#B392F0">      Linear(2,</span><span style="color:#79B8FF"> 4</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">      ReLU</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">      Linear(4,</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#B392F0">      Sigmoid</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#B392F0">      out</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. Create training data (xor_train.jsonl)</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#B392F0">"input"</span><span style="color:#79B8FF">:</span><span style="color:#E1E4E8"> [0.0, </span><span style="color:#9ECBFF">0.0],</span><span style="color:#9ECBFF"> "target":</span><span style="color:#E1E4E8"> [0.0]}</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#B392F0">"input"</span><span style="color:#79B8FF">:</span><span style="color:#E1E4E8"> [0.0, </span><span style="color:#9ECBFF">1.0],</span><span style="color:#9ECBFF"> "target":</span><span style="color:#E1E4E8"> [1.0]}</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#B392F0">"input"</span><span style="color:#79B8FF">:</span><span style="color:#E1E4E8"> [1.0, </span><span style="color:#9ECBFF">0.0],</span><span style="color:#9ECBFF"> "target":</span><span style="color:#E1E4E8"> [1.0]}</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span><span style="color:#B392F0">"input"</span><span style="color:#79B8FF">:</span><span style="color:#E1E4E8"> [1.0, </span><span style="color:#9ECBFF">1.0],</span><span style="color:#9ECBFF"> "target":</span><span style="color:#E1E4E8"> [0.0]}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3. Write a minimal config (xor_config.yml)</span></span>
+<span class="line"><span style="color:#B392F0">model:</span></span>
+<span class="line"><span style="color:#B392F0">  neuron:</span><span style="color:#9ECBFF"> XOR</span></span>
+<span class="line"><span style="color:#B392F0">  file:</span><span style="color:#9ECBFF"> examples/01-xor.ns</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">data:</span></span>
+<span class="line"><span style="color:#B392F0">  train:</span><span style="color:#9ECBFF"> examples/data/xor_train.jsonl</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">training:</span></span>
+<span class="line"><span style="color:#B392F0">  epochs:</span><span style="color:#79B8FF"> 1000</span></span>
+<span class="line"><span style="color:#B392F0">  lr:</span><span style="color:#79B8FF"> 0.01</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4. Train</span></span>
+<span class="line"><span style="color:#B392F0">python</span><span style="color:#79B8FF"> -m</span><span style="color:#9ECBFF"> neuroscript_runtime.runner</span><span style="color:#9ECBFF"> train</span><span style="color:#79B8FF"> --config</span><span style="color:#9ECBFF"> xor_config.yml</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># That's it!</span></span></code></pre>
+<p><strong>What makes this work? <em>Convention over Configuration</em></strong></p>
+<p>The runner:</p>
+<ol>
+<li>
+<p><strong>Infers the task</strong> from input/output shapes:</p>
+<ul>
+<li><code>[batch, 2] -> [batch, 1]</code> = Regression -> MSE loss</li>
+<li><code>[batch, seq] -> [batch, seq, vocab]</code> = Language Model -> CrossEntropy</li>
+<li><code>[batch, C, H, W] -> [batch, classes]</code> = Image Classification</li>
+</ul>
+</li>
+<li>
+<p><strong>Picks sensible defaults:</strong></p>
+<ul>
+<li>Optimizer: Adam (good for most things)</li>
+<li>Batch size: 32</li>
+<li>Logging: Every 100 steps</li>
+<li>Checkpointing: Every 1000 steps</li>
+</ul>
+</li>
+<li>
+<p><strong>Makes extension trivial:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> neuroscript_runtime.contracts </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> DataLoaderContract, ContractRegistry</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> MyHuggingFaceLoader</span><span style="color:#E1E4E8">(</span><span style="color:#B392F0">DataLoaderContract</span><span style="color:#E1E4E8">):</span></span>
+<span class="line"><span style="color:#6A737D">    # Implement interface</span></span>
+<span class="line"><span style="color:#F97583">    pass</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Register it</span></span>
+<span class="line"><span style="color:#E1E4E8">ContractRegistry.register_dataloader(</span><span style="color:#9ECBFF">"huggingface"</span><span style="color:#E1E4E8">, MyHuggingFaceLoader)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Use in config:</span></span>
+<span class="line"><span style="color:#6A737D"># data:</span></span>
+<span class="line"><span style="color:#6A737D">#   format: huggingface</span></span>
+<span class="line"><span style="color:#6A737D">#   dataset: "wikitext"</span></span></code></pre>
+</li>
+</ol>
+<p><strong>The Contract System</strong> is the secret sauce. Five extension points:</p>
+<ul>
+<li><strong>DataLoader</strong>: How to load data (default: JSONL files)</li>
+<li><strong>Loss</strong>: How to compute error (default: inferred from task)</li>
+<li><strong>Optimizer</strong>: How to update weights (default: Adam)</li>
+<li><strong>Checkpoint</strong>: How to save/load (default: <code>torch.save</code>)</li>
+<li><strong>Logger</strong>: How to track progress (default: console)</li>
+</ul>
+<p>Ship with one good default for each. Make it trivial to swap in custom implementations. Let the community build the ecosystem.</p>
+<p><strong>The full Python API:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> neuroscript_runtime.runner_v2 </span><span style="color:#F97583">import</span><span style="color:#E1E4E8"> train_from_config</span></span>
+<span class="line"><span style="color:#F97583">from</span><span style="color:#E1E4E8"> xor_model </span><span style="color:#F97583">import</span><span style="color:#79B8FF"> XOR</span><span style="color:#6A737D">  # Generated by NeuroScript compiler</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">model </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> XOR()</span></span>
+<span class="line"><span style="color:#E1E4E8">runner </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> train_from_config(model, </span><span style="color:#9ECBFF">"config.yml"</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Inference</span></span>
+<span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> torch</span></span>
+<span class="line"><span style="color:#E1E4E8">result </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> runner.infer(torch.tensor([[</span><span style="color:#79B8FF">1.0</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0.0</span><span style="color:#E1E4E8">]]))</span></span>
+<span class="line"><span style="color:#79B8FF">print</span><span style="color:#E1E4E8">(result)  </span><span style="color:#6A737D"># [0.9999] ≈ 1.0</span></span></code></pre>
+<p><strong>Why this matters:</strong> You can go from idea to trained model in minutes, not hours. When you need custom behavior, the extension points are obvious. When you need full control, it’s just PyTorch under the hood—drop down anytime.</p>
+<p><strong>Batteries included. Escape hatch provided.</strong></p>  </div> </article> </main> <footer data-astro-cid-sz7xmlte>
+&copy; 2025 Thomas Quick. All rights reserved.
+</footer>  </body></html>
