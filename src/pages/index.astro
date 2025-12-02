@@ -1,0 +1,86 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection, render } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+).slice(0, 5);
+
+const renderedPosts = await Promise.all(posts.map(async (post) => {
+  const { Content } = await render(post);
+  return { ...post, Content };
+}));
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			main {
+				width: 960px;
+			}
+			.intro {
+				margin-bottom: 3rem;
+				text-align: center;
+			}
+			.post {
+				margin-bottom: 4rem;
+				padding-bottom: 2rem;
+				border-bottom: 1px solid rgb(var(--gray-light));
+			}
+			.post:last-child {
+				border-bottom: none;
+			}
+			.title {
+				margin: 0;
+				color: rgb(var(--black));
+				line-height: 1;
+			}
+			.date {
+				margin: 0;
+				color: rgb(var(--gray));
+				margin-bottom: 1rem;
+			}
+			.content {
+				margin-top: 1rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="intro">
+				<h1>NeuroScript Blog</h1>
+				<p>
+					Thoughts on AI, NeuroScript, and programming.
+				</p>
+			</div>
+			<section>
+				{
+					renderedPosts.map((post) => (
+						<article class="post">
+							<a href={`/blog/${post.id}/`} style="text-decoration: none;">
+								<h2 class="title">{post.data.title}</h2>
+							</a>
+							<p class="date">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+							{post.data.heroImage && (
+								<img width={960} height={480} src={post.data.heroImage.src} alt="" style="border-radius: 12px; margin-bottom: 1rem;" />
+							)}
+							<div class="content">
+								<post.Content />
+							</div>
+						</article>
+					))
+				}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

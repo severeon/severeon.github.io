@@ -1,0 +1,63 @@
+{
+  "scopeName": "source.neuroscript",
+  "patterns": [
+    {
+      "comment": "Comments",
+      "match": "#.*$",
+      "name": "comment.line.number-sign.neuroscript"
+    },
+    {
+      "comment": "Keywords",
+      "match": "\\b(neuron|in|out|graph|let|use)\\b",
+      "name": "keyword.control.neuroscript"
+    },
+    {
+      "comment": "Operators",
+      "match": "->",
+      "name": "keyword.operator.neuroscript"
+    },
+    {
+      "comment": "Functions/Layers",
+      "match": "\\b([A-Z][a-zA-Z0-9]*)\\b",
+      "name": "entity.name.function.neuroscript"
+    },
+    {
+      "comment": "Numbers",
+      "match": "\\b\\d+(\\.\\d+)?\\b",
+      "name": "constant.numeric.neuroscript"
+    },
+    {
+      "comment": "Strings",
+      "match": "\"[^\"]*\"",
+      "name": "string.quoted.double.neuroscript"
+    },
+    {
+      "comment": "Dimensions in brackets",
+      "begin": "\\[",
+      "end": "\\]",
+      "patterns": [
+        {
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b",
+          "name": "variable.parameter.neuroscript"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.neuroscript"
+        },
+        {
+          "match": "\\d+",
+          "name": "constant.numeric.neuroscript"
+        },
+        {
+          "match": "\\*",
+          "name": "constant.language.neuroscript"
+        }
+      ]
+    },
+    {
+      "comment": "Parameters",
+      "match": "\\b[a-z][a-zA-Z0-9_]*\\b",
+      "name": "variable.other.neuroscript"
+    }
+  ]
+}
