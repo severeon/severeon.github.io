@@ -6186,8 +6186,8 @@ In NeuroScript, shapes use **dimension variables** like `dim`, `batch`, `seq` th
 
 ```neuroscript
 neuron MyNeuron(dim):
-  in: [*, dim]        # Input: any batch dimensions + dim
-  out: [*, dim * 4]   # Output: same batch dimensions + dim * 4
+    in: [*, dim]        # Input: any batch dimensions + dim
+    out: [*, dim * 4]   # Output: same batch dimensions + dim * 4
 ```
 
 When you instantiate this neuron, the compiler infers the actual value of `dim` from the context.
@@ -6200,10 +6200,10 @@ This neuron takes input of shape `[*, dim]` and produces output of shape `[*, di
   title="Linear Projection"
   description="The dimension variable 'dim' is used in both input shape and Linear arguments"
   initialCode={`neuron LinearProjection(dim):
-  in: [*, dim]
-  out: [*, dim * 4]
-  graph:
-    in -> Linear(dim, dim * 4) -> out`}
+    in: [*, dim]
+    out: [*, dim * 4]
+    graph:
+        in -> Linear(dim, dim * 4) -> out`}
 />
 
 Click "Show Analysis" to see the shape contracts. Notice how `dim` appears in:
@@ -6219,14 +6219,14 @@ A common pattern is to expand dimensions, apply transformations, then contract b
   title="Expand-Contract (FFN Pattern)"
   description="Dimensions expand (dim -> dim*4) then contract back (dim*4 -> dim)"
   initialCode={`neuron FFN(dim):
-  in: [*, dim]
-  out: [*, dim]
-  graph:
-    in ->
-      Linear(dim, dim * 4)
-      GELU()
-      Linear(dim * 4, dim)
-      out`}
+    in: [*, dim]
+    out: [*, dim]
+    graph:
+        in ->
+            Linear(dim, dim * 4)
+            GELU()
+            Linear(dim * 4, dim)
+            out`}
 />
 
 This is the feed-forward network (FFN) pattern used in Transformers. The intermediate dimension is 4x the input, allowing for richer representations.
@@ -6239,13 +6239,13 @@ You can use multiple dimension variables for more complex shapes:
   title="Multi-Head Attention Shape"
   description="Three dimension variables: batch (*), sequence (seq), and model dimension (dim)"
   initialCode={`neuron AttentionBlock(dim, heads):
-  in: [*, seq, dim]
-  out: [*, seq, dim]
-  graph:
-    in ->
-      LayerNorm(dim)
-      MultiHeadSelfAttention(dim, heads)
-      out`}
+    in: [*, seq, dim]
+    out: [*, seq, dim]
+    graph:
+        in ->
+            LayerNorm(dim)
+            MultiHeadSelfAttention(dim, heads)
+            out`}
 />
 
 Here:
@@ -6297,12 +6297,12 @@ This creates two references (`branch_a` and `branch_b`) that both point to the s
   title="Simple Fork"
   description="Fork creates two identical copies that can be processed separately"
   initialCode={`neuron SimpleFork(dim):
-  in: [*, dim]
-  out: [*, dim]
-  graph:
-    in -> Fork() -> (left, right)
-    left -> Linear(dim, dim) -> processed
-    (processed, right) -> Add() -> out`}
+    in: [*, dim]
+    out: [*, dim]
+    graph:
+        in -> Fork() -> (left, right)
+        left -> Linear(dim, dim) -> processed
+        (processed, right) -> Add() -> out`}
 />
 
 In this example:
@@ -6319,17 +6319,17 @@ The most common fork/join pattern is the **residual connection** (skip connectio
   title="Residual Block"
   description="The classic ResNet pattern: process main path, add skip connection"
   initialCode={`neuron ResidualBlock(dim):
-  in: [*, dim]
-  out: [*, dim]
-  graph:
-    in -> Fork() -> (main, skip)
-    main ->
-      LayerNorm(dim)
-      Linear(dim, dim * 4)
-      GELU()
-      Linear(dim * 4, dim)
-      processed
-    (processed, skip) -> Add() -> out`}
+    in: [*, dim]
+    out: [*, dim]
+    graph:
+        in -> Fork() -> (main, skip)
+        main ->
+            LayerNorm(dim)
+            Linear(dim, dim * 4)
+            GELU()
+            Linear(dim * 4, dim)
+            processed
+        (processed, skip) -> Add() -> out`}
 />
 
 Key points:
@@ -6346,15 +6346,15 @@ Use `Fork3()` to create three branches:
   title="Three-Way Processing"
   description="Fork3 creates three branches for parallel processing"
   initialCode={`neuron ThreeWayBlock(dim):
-  in: [*, dim]
-  out: [*, dim]
-  graph:
-    in -> Fork3() -> (a, b, c)
-    a -> Linear(dim, dim) -> pa
-    b -> Linear(dim, dim) -> pb
-    c -> Identity() -> pc
-    (pa, pb) -> Add() -> ab
-    (ab, pc) -> Add() -> out`}
+    in: [*, dim]
+    out: [*, dim]
+    graph:
+        in -> Fork3() -> (a, b, c)
+        a -> Linear(dim, dim) -> pa
+        b -> Linear(dim, dim) -> pb
+        c -> Identity() -> pc
+        (pa, pb) -> Add() -> ab
+        (ab, pc) -> Add() -> out`}
 />
 
 ## Shape Constraints at Merge Points
@@ -6380,13 +6380,13 @@ If you want to combine branches with different dimensions, use `Concat()`:
   title="Concatenation"
   description="Concat joins tensors along the last dimension"
   initialCode={`neuron ConcatBranches(dim):
-  in: [*, dim]
-  out: [*, dim * 2]
-  graph:
-    in -> Fork() -> (a, b)
-    a -> Linear(dim, dim) -> pa
-    b -> Linear(dim, dim) -> pb
-    (pa, pb) -> Concat() -> out`}
+    in: [*, dim]
+    out: [*, dim * 2]
+    graph:
+        in -> Fork() -> (a, b)
+        a -> Linear(dim, dim) -> pa
+        b -> Linear(dim, dim) -> pb
+        (pa, pb) -> Concat() -> out`}
 />
 
 ## Try It Yourself
@@ -6411,8 +6411,8 @@ NeuroScript's `match` expressions let you route tensors to different processing 
 
 ```neuroscript
 in -> match:
-  [pattern]: pipeline -> out
-  [pattern]: different_pipeline -> out
+    [pattern]: pipeline -> out
+    [pattern]: different_pipeline -> out
 ```
 
 Each arm has:
@@ -6440,12 +6440,12 @@ Captured dimensions can be used in:
   title="Adaptive Projection"
   description="Different processing paths based on input dimension size"
   initialCode={`neuron AdaptiveProjection():
-  in: [*, d]
-  out: [*, 512]
-  graph:
-    in -> match:
-      [*, d] where d > 512: Linear(d, 512) -> out
-      [*, d] where d <= 512: Linear(d, 256) -> Linear(256, 512) -> out`}
+    in: [*, d]
+    out: [*, 512]
+    graph:
+        in -> match:
+            [*, d] where d > 512: Linear(d, 512) -> out
+            [*, d] where d <= 512: Linear(d, 256) -> Linear(256, 512) -> out`}
 />
 
 This neuron:
@@ -6460,14 +6460,14 @@ Click "Show Analysis" to see the match arms and their patterns.
   title="Multi-Tier Compression"
   description="Four different compression strategies based on input size"
   initialCode={`neuron AdaptiveCompressor():
-  in: [*, d]
-  out: [*, 128]
-  graph:
-    in -> match:
-      [*, d] where d > 1024: Linear(d, 512) -> GELU() -> Linear(512, 128) -> out
-      [*, d] where d > 512: Linear(d, 256) -> GELU() -> Linear(256, 128) -> out
-      [*, d] where d > 128: Linear(d, 128) -> out
-      [*, d]: Identity() -> out`}
+    in: [*, d]
+    out: [*, 128]
+    graph:
+        in -> match:
+            [*, d] where d > 1024: Linear(d, 512) -> GELU() -> Linear(512, 128) -> out
+            [*, d] where d > 512: Linear(d, 256) -> GELU() -> Linear(256, 128) -> out
+            [*, d] where d > 128: Linear(d, 128) -> out
+            [*, d]: Identity() -> out`}
 />
 
 This creates four tiers:
@@ -6501,13 +6501,13 @@ Match on multiple dimensions for sequence models:
   title="Sequence-Aware Encoder"
   description="Different processing based on sequence length and dimension"
   initialCode={`neuron FlexibleEncoder():
-  in: [*, seq, d]
-  out: [*, seq, 512]
-  graph:
-    in -> match:
-      [*, seq, d] where d == 512: Identity() -> out
-      [*, seq, d] where d < 512: Linear(d, 512) -> out
-      [*, seq, d] where d > 512: Linear(d, 512) -> out`}
+    in: [*, seq, d]
+    out: [*, seq, 512]
+    graph:
+        in -> match:
+            [*, seq, d] where d == 512: Identity() -> out
+            [*, seq, d] where d < 512: Linear(d, 512) -> out
+            [*, seq, d] where d > 512: Linear(d, 512) -> out`}
 />
 
 ## Using Captured Dimensions in Pipelines
@@ -6518,18 +6518,18 @@ Captured dimensions can be used as arguments to neurons in the pipeline:
   title="Dynamic Layer Sizing"
   description="Captured dimension 'd' is used in Linear layer arguments"
   initialCode={`neuron DynamicProjection():
-  in: [*, d]
-  out: [*, 512]
-  graph:
-    in -> match:
-      [*, d] where d > 512:
-        Linear(d, 512)
-        out
-      [*, d]:
-        Linear(d, d * 2)
-        GELU()
-        Linear(d * 2, 512)
-        out`}
+    in: [*, d]
+    out: [*, 512]
+    graph:
+        in -> match:
+            [*, d] where d > 512:
+                Linear(d, 512)
+                out
+            [*, d]:
+                Linear(d, d * 2)
+                GELU()
+                Linear(d * 2, 512)
+                out`}
 />
 
 Notice how `d` appears in `Linear(d, 512)` and `Linear(d, d * 2)`. The actual values are determined at runtime based on the input shape.
@@ -6594,15 +6594,15 @@ Use inline `if`/`else` when each branch is a short pipeline:
   title="Optional Pooling"
   description="A flag parameter controls whether pooling is applied"
   initialCode={`neuron ConvBlock(in_ch, out_ch, has_pool=true):
-  in: [batch, in_ch, h, w]
-  out: [batch, out_ch, h, w]
-  context:
-    conv = Conv2d(in_ch, out_ch, 3, padding=1)
-    bn = BatchNorm(out_ch)
-    act = ReLU()
-  graph:
-    in -> conv -> bn -> act
-    act -> if has_pool: MaxPool(2, stride=2) -> out else: Identity() -> out`}
+    in: [batch, in_ch, h, w]
+    out: [batch, out_ch, h, w]
+    context:
+        conv = Conv2d(in_ch, out_ch, 3, padding=1)
+        bn = BatchNorm(out_ch)
+        act = ReLU()
+    graph:
+        in -> conv -> bn -> act
+        act -> if has_pool: MaxPool(2, stride=2) -> out else: Identity() -> out`}
 />
 
 Here `has_pool` is a parameter with a default value of `true`. The compiler statically resolves which branch to include.
@@ -6615,21 +6615,21 @@ When branches contain multi-step pipelines, use the indented block form:
   title="Multi-Line Conditional"
   description="Indented if/else with multi-step branches that feed into the next pipeline step"
   initialCode={`neuron ConvBlock(in_ch, out_ch, has_pool=true):
-  in: [batch, in_ch, h, w]
-  out: [batch, out_ch, h, w]
-  context:
-    conv = Conv2d(in_ch, out_ch, 3, padding=1)
-    bn = BatchNorm(out_ch)
-    act = ReLU()
-    @lazy pool = MaxPool(2, stride=2)
-  graph:
-    in ->
-      conv
-      bn
-      act
-      if has_pool: pool
-      else: Identity()
-      out`}
+    in: [batch, in_ch, h, w]
+    out: [batch, out_ch, h, w]
+    context:
+        conv = Conv2d(in_ch, out_ch, 3, padding=1)
+        bn = BatchNorm(out_ch)
+        act = ReLU()
+        @lazy pool = MaxPool(2, stride=2)
+    graph:
+        in ->
+            conv
+            bn
+            act
+            if has_pool: pool
+            else: Identity()
+            out`}
 />
 
 Both branches flow into `out` — the conditional sits inline within the pipeline, and the next step after the `if`/`else` block receives whichever branch was selected.
@@ -6661,19 +6661,19 @@ When a conditional branch references a neuron that should only be instantiated i
   title="Lazy Conditional"
   description="@lazy ensures the pool module is only instantiated when has_pool is true"
   initialCode={`neuron ConvBlock(in_ch, out_ch, has_pool=true):
-  in: [batch, in_ch, h, w]
-  out: [batch, out_ch, h, w]
-  context:
-    conv = Conv2d(in_ch, out_ch, 3, padding=1)
-    bn = BatchNorm(out_ch)
-    act = ReLU()
-    @lazy pool = MaxPool(2, stride=2)
-  graph:
-    in -> conv -> bn -> act
-    act ->
-      if has_pool: pool
-      else: Identity()
-      out`}
+    in: [batch, in_ch, h, w]
+    out: [batch, out_ch, h, w]
+    context:
+        conv = Conv2d(in_ch, out_ch, 3, padding=1)
+        bn = BatchNorm(out_ch)
+        act = ReLU()
+        @lazy pool = MaxPool(2, stride=2)
+    graph:
+        in -> conv -> bn -> act
+        act ->
+            if has_pool: pool
+            else: Identity()
+            out`}
 />
 
 Without `@lazy`, the pool module would be instantiated in `__init__` even when `has_pool` is `false`. The `@lazy` annotation defers instantiation until the binding is actually used.
@@ -6733,7 +6733,7 @@ The `unroll` construct expands repeated layers at **compile time**. Instead of w
 
 ## Why "Unroll"?
 
-The name is intentional — this is not a runtime loop. The compiler literally unrolls the construct into N separate graph nodes before code generation. The count must be a constant or neuron parameter, never a runtime value.
+The name is intentional — this is not a runtime loop. The compiler literally unrolls the construct into N separate graph nodes before code generation. The count must be a literal integer or a parameter with a default value, never a runtime value.
 
 ## Sequential Threading
 
@@ -6742,19 +6742,14 @@ The most common form chains iterations sequentially — the output of iteration 
 <InteractiveExample
   title="Transformer Stack"
   description="N transformer blocks chained sequentially via unroll"
-  initialCode={`neuron TransformerBlock(d_model):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  impl: core,transformer/TransformerBlock
-
-neuron TransformerStack(d_model, num_layers):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  graph:
-    in ->
-      unroll(num_layers): ->
-        TransformerBlock(d_model)
-      out`}
+  initialCode={`neuron TransformerStack(d_model, num_heads, d_ff, num_layers=6):
+    in: [batch, seq, d_model]
+    out: [batch, seq, d_model]
+    graph:
+        in ->
+            unroll(num_layers): ->
+                TransformerBlock(d_model, num_heads, d_ff)
+            out`}
 />
 
 The `->` after the colon is what makes this sequential. It means "thread the data through each iteration." The unrolled block must have compatible input/output shapes since each output becomes the next input.
@@ -6766,22 +6761,17 @@ When you need named bindings for each iteration, declare them inside an `unroll`
 <InteractiveExample
   title="Context-Scoped Unroll"
   description="Each iteration gets its own independent block instance"
-  initialCode={`neuron TransformerBlock(d_model):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  impl: core,transformer/TransformerBlock
-
-neuron NamedStack(d_model, num_layers=3):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  context:
-    unroll(num_layers):
-      block = TransformerBlock(d_model)
-  graph:
-    in ->
-      unroll(num_layers): ->
-        block
-      out`}
+  initialCode={`neuron NamedStack(d_model, num_heads, d_ff, num_layers=3):
+    in: [batch, seq, d_model]
+    out: [batch, seq, d_model]
+    context:
+        unroll(num_layers):
+            block = TransformerBlock(d_model, num_heads, d_ff)
+    graph:
+        in ->
+            unroll(num_layers): ->
+                block
+            out`}
 />
 
 The compiler matches context-unroll bindings to graph-unroll references by the unroll parameter. Iteration 0 gets instance 0, iteration 1 gets instance 1, and so on. Each `block` is an independent module with its own weights.
@@ -6793,22 +6783,17 @@ To reuse the **same weights** across all iterations (like a Universal Transforme
 <InteractiveExample
   title="Weight Sharing"
   description="@static makes all iterations share one set of weights"
-  initialCode={`neuron TransformerBlock(d_model):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  impl: core,transformer/TransformerBlock
-
-neuron UniversalTransformer(d_model, num_steps=6):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  context:
-    unroll(num_steps):
-      @static block = TransformerBlock(d_model)
-  graph:
-    in ->
-      unroll(num_steps): ->
-        block
-      out`}
+  initialCode={`neuron UniversalTransformer(d_model, num_heads, d_ff, num_steps=6):
+    in: [batch, seq, d_model]
+    out: [batch, seq, d_model]
+    context:
+        unroll(num_steps):
+            @static block = TransformerBlock(d_model, num_heads, d_ff)
+    graph:
+        in ->
+            unroll(num_steps): ->
+                block
+            out`}
 />
 
 `@static` means one instance, reused across all references. The generated code creates a single `TransformerBlock` in `__init__` and calls it `num_steps` times in `forward`.
@@ -6820,42 +6805,22 @@ neuron UniversalTransformer(d_model, num_steps=6):
 <InteractiveExample
   title="GPT-2 Small"
   description="Full model: embedding → unrolled transformer blocks → head"
-  initialCode={`neuron Linear(in_dim, out_dim):
-  in: [*shape, in_dim]
-  out: [*shape, out_dim]
-  impl: core,nn/Linear
-
-neuron LayerNorm(dim):
-  in: [*shape, dim]
-  out: [*shape, dim]
-  impl: core,normalization/LayerNorm
-
-neuron Embedding(vocab_size, d_model):
-  in: [*shape]
-  out: [*shape, d_model]
-  impl: core,nn/Embedding
-
-neuron TransformerBlock(d_model):
-  in: [*, seq, d_model]
-  out: [*, seq, d_model]
-  impl: core,transformer/TransformerBlock
-
-neuron GPT2Small(vocab_size=50257, d_model=768, num_layers=12):
-  in: [*, seq]
-  out: [*, seq, vocab_size]
-  context:
-    embed = Embedding(vocab_size, d_model)
-    unroll(num_layers):
-      block = TransformerBlock(d_model)
-    ln_f = LayerNorm(d_model)
-    head = Linear(d_model, vocab_size)
-  graph:
-    in -> embed -> e
-    e ->
-      unroll(num_layers): ->
-        block
-      mid
-    mid -> ln_f -> head -> out`}
+  initialCode={`neuron GPT2Small(vocab_size=50257, d_model=768, num_heads=12, d_ff=3072, num_layers=12):
+    in: [*, seq]
+    out: [*, seq, vocab_size]
+    context:
+        embed = Embedding(vocab_size, d_model)
+        unroll(num_layers):
+            block = TransformerBlock(d_model, num_heads, d_ff)
+        ln_f = LayerNorm(d_model)
+        head = Linear(d_model, vocab_size)
+    graph:
+        in -> embed -> e
+        e ->
+            unroll(num_layers): ->
+                block
+            mid
+        mid -> ln_f -> head -> out`}
 />
 
 This replaces what would otherwise be 12 hand-written `TransformerBlock` calls.
@@ -6865,12 +6830,12 @@ This replaces what would otherwise be 12 hand-written `TransformerBlock` calls.
 Each unroll iteration can contain multiple bindings:
 
 ```neuroscript
-neuron MultiScaleEncoder(dim, num_scales):
+neuron MultiScaleEncoder(dim, num_heads, d_ff, num_scales=4):
     in: [*, seq, dim]
     out: [*, seq, dim]
     context:
         unroll(num_scales):
-            encoder = TransformerBlock(dim, 8, dim * 4)
+            encoder = TransformerBlock(dim, num_heads, d_ff)
             norm = LayerNorm(dim)
     graph:
         in ->
@@ -6887,13 +6852,13 @@ Each iteration gets its own independent `encoder` and `norm` pair.
 Unroll-scoped and regular bindings compose freely:
 
 ```neuroscript
-neuron HybridStack(dim, num_layers):
+neuron HybridStack(dim, num_heads, d_ff, num_layers=6):
     in: [*, seq, dim]
     out: [*, seq, dim]
     context:
         @static shared_norm = LayerNorm(dim)
         unroll(num_layers):
-            block = TransformerBlock(dim, 8, dim * 4)
+            block = TransformerBlock(dim, num_heads, d_ff)
     graph:
         in ->
             unroll(num_layers): ->
@@ -6906,7 +6871,7 @@ Each iteration gets its own `block` (independent weights), but all iterations sh
 
 ## Key Rules
 
-- The count must be a **constant or parameter** — no runtime values
+- The count must be a **literal integer or a parameter with a default value** — it must be resolvable at compile time
 - The `->` after the colon means **sequential threading** (output feeds next input)
 - Each iteration gets **independent weights** unless `@static` is used
 - Context-unroll bindings are **scoped** — they can only be referenced inside a matching graph-unroll
@@ -6950,24 +6915,14 @@ Pass a tuple of connections to a variadic neuron:
 <InteractiveExample
   title="Two-Input Concat"
   description="Two branches concatenated along the last dimension"
-  initialCode={`neuron Concat(dim):
-  in *inputs: [*shape]
-  out: [*shape_out]
-  impl: core,structural/Concat
-
-neuron Linear(in_dim, out_dim):
-  in: [*, in_dim]
-  out: [*, out_dim]
-  impl: core,nn/Linear
-
-neuron TwoWayConcat(dim):
-  in: [*, dim]
-  out: [*, dim * 2]
-  graph:
-    in -> (a, b)
-    a -> Linear(dim, dim) -> pa
-    b -> Linear(dim, dim) -> pb
-    (pa, pb) -> Concat(1) -> out`}
+  initialCode={`neuron TwoWayConcat(dim):
+    in: [*, dim]
+    out: [*, dim * 2]
+    graph:
+        in -> (a, b)
+        a -> Linear(dim, dim) -> pa
+        b -> Linear(dim, dim) -> pb
+        (pa, pb) -> Concat(1) -> out`}
 />
 
 The tuple `(pa, pb)` feeds into `Concat`'s variadic `*inputs` port. Each element is checked against the shape pattern independently.
@@ -6979,25 +6934,15 @@ The same neuron works with any number of inputs — no overloads needed:
 <InteractiveExample
   title="Three-Input Concat"
   description="Three branches concatenated — same Concat neuron, more inputs"
-  initialCode={`neuron Concat(dim):
-  in *inputs: [*shape]
-  out: [*shape_out]
-  impl: core,structural/Concat
-
-neuron Linear(in_dim, out_dim):
-  in: [*, in_dim]
-  out: [*, out_dim]
-  impl: core,nn/Linear
-
-neuron ThreeWayConcat(dim):
-  in: [*, dim]
-  out: [*, dim * 3]
-  graph:
-    in -> (a, b, c)
-    a -> Linear(dim, dim) -> pa
-    b -> Linear(dim, dim) -> pb
-    c -> Linear(dim, dim) -> pc
-    (pa, pb, pc) -> Concat(1) -> out`}
+  initialCode={`neuron ThreeWayConcat(dim):
+    in: [*, dim]
+    out: [*, dim * 3]
+    graph:
+        in -> (a, b, c)
+        a -> Linear(dim, dim) -> pa
+        b -> Linear(dim, dim) -> pb
+        c -> Linear(dim, dim) -> pc
+        (pa, pb, pc) -> Concat(1) -> out`}
 />
 
 ## Composing Variadic Neurons
@@ -7007,21 +6952,11 @@ A composite neuron can itself declare a variadic port and pass it through:
 <InteractiveExample
   title="Variadic Composite"
   description="ConcatNorm accepts any number of inputs, concatenates, then normalizes"
-  initialCode={`neuron Concat(dim):
-  in *inputs: [*shape]
-  out: [*shape_out]
-  impl: core,structural/Concat
-
-neuron LayerNorm(dim):
-  in: [*, dim]
-  out: [*, dim]
-  impl: core,normalization/LayerNorm
-
-neuron ConcatNorm(dim):
-  in *inputs: [*shape]
-  out: [*, dim]
-  graph:
-    in -> Concat(1) -> LayerNorm(dim) -> out`}
+  initialCode={`neuron ConcatNorm(dim):
+    in *inputs: [*shape]
+    out: [*, dim]
+    graph:
+        in -> Concat(1) -> LayerNorm(dim) -> out`}
 />
 
 When a composite neuron has a variadic port, the incoming tuple is passed as-is to the first connection. Here, `in` carries the full tuple directly into `Concat`.
@@ -7033,26 +6968,16 @@ Variadic ports enable multi-branch architectures where the number of branches is
 <InteractiveExample
   title="Four-Way Concat"
   description="Four parallel paths merged via variadic Concat"
-  initialCode={`neuron Concat(dim):
-  in *inputs: [*shape]
-  out: [*shape_out]
-  impl: core,structural/Concat
-
-neuron Linear(in_dim, out_dim):
-  in: [*, in_dim]
-  out: [*, out_dim]
-  impl: core,nn/Linear
-
-neuron FourWayConcat(dim):
-  in: [*, dim]
-  out: [*, dim * 4]
-  graph:
-    in -> (a, b, c, d)
-    a -> Linear(dim, dim) -> pa
-    b -> Linear(dim, dim) -> pb
-    c -> Linear(dim, dim) -> pc
-    d -> Linear(dim, dim) -> pd
-    (pa, pb, pc, pd) -> Concat(1) -> out`}
+  initialCode={`neuron FourWayConcat(dim):
+    in: [*, dim]
+    out: [*, dim * 4]
+    graph:
+        in -> (a, b, c, d)
+        a -> Linear(dim, dim) -> pa
+        b -> Linear(dim, dim) -> pb
+        c -> Linear(dim, dim) -> pc
+        d -> Linear(dim, dim) -> pd
+        (pa, pb, pc, pd) -> Concat(1) -> out`}
 />
 
 ## Rules and Constraints
